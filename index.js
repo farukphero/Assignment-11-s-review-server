@@ -20,7 +20,7 @@ async function run(){
       const serviceCollection = client.db('flyPlane').collection('services')
     //    akekjon to onek ta order dibe tai alada collection create korte hobe
     
-      const  addNewServicesCollection = client.db('flyPlane').collection('newServices')
+      const  reviewsCollection = client.db('flyPlane').collection('reviews')
     
     app.get('/allServices',async(req, res)=>{
         const query ={}
@@ -40,27 +40,20 @@ async function run(){
         const service= await serviceCollection.findOne(query);
         res.send(service)
     })
-    
-    //  newServices api 
-    app.get('/newServices',async(req, res)=>{
-       const query ={}
-        const cursor = addNewServicesCollection.find(query);   
-        const newService = await cursor.toArray();
-        res.send(newService)
-    })
-
-    app.get('/newServices/:id',async(req, res)=>{
-      const id = req.params.id
-      const query ={_id : ObjectId(id)}
-      const newService= await addNewServicesCollection.findOne(query);
-      res.send(newService)
+    app.post('/services', async(req, res)=>{
+      const services = req.body;
+      const result = await serviceCollection.insertOne(services);
+      services.id= result.insertedId;
+      res.send(result)
   })
-    app.post('/newServices', async(req, res)=>{
-        const newService = req.body;
-        const result = await addNewServicesCollection.insertOne(newService);
-        newService.id= result.insertedId;
-        res.send(result)
-    })
+ 
+    app.post('/reviews', async(req, res)=>{
+      const reviews = req.body;
+      const result = await reviewsCollection.insertOne(reviews);
+      reviews.id= result.insertedId;
+      res.send(result)
+  })
+    
     }
     finally{
     
