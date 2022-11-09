@@ -42,6 +42,14 @@ async function run(){
     })
     
     //  newServices api 
+    app.get('/newServices',async(req, res)=>{
+       const query ={}
+        const cursor = addNewServicesCollection.find(query);   
+        const newService = await cursor.toArray();
+        res.send(newService)
+    })
+
+  
     app.post('/newServices', async(req, res)=>{
         const newService = req.body;
         const result = await addNewServicesCollection.insertOne(newService);
