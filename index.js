@@ -49,7 +49,12 @@ async function run(){
         res.send(newService)
     })
 
-  
+    app.get('/newServices/:id',async(req, res)=>{
+      const id = req.params.id
+      const query ={_id : ObjectId(id)}
+      const newService= await addNewServicesCollection.findOne(query);
+      res.send(newService)
+  })
     app.post('/newServices', async(req, res)=>{
         const newService = req.body;
         const result = await addNewServicesCollection.insertOne(newService);
