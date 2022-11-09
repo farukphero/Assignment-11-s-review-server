@@ -20,7 +20,7 @@ async function run(){
       const serviceCollection = client.db('flyPlane').collection('services')
     //    akekjon to onek ta order dibe tai alada collection create korte hobe
     
-    //   const  orderCollection = client.db('geniusCar').collection('orders')
+      const  addNewServicesCollection = client.db('flyPlane').collection('newServices')
     
     app.get('/allServices',async(req, res)=>{
         const query ={}
@@ -41,23 +41,13 @@ async function run(){
         res.send(service)
     })
     
-    // // orders api 
-    // app.get('/orders',async(req, res)=>{
-    //     let query ={}
-    //     if(req.query.email){
-    //         query = {
-    //             email : req.query.email
-    //         }
-    //     }
-    //     const cursor = orderCollection.find(query);   
-    //     const orders= await cursor.toArray();
-    //     res.send(orders)
-    // })
-    // app.post('/orders', async(req, res)=>{
-    //     const order = req.body;
-    //     const result = await orderCollection.insertOne(order);
-    //     res.send(result)
-    // })
+    //  newServices api 
+    app.post('/newServices', async(req, res)=>{
+        const newService = req.body;
+        const result = await addNewServicesCollection.insertOne(newService);
+        newService.id= result.insertedId;
+        res.send(result)
+    })
     }
     finally{
     
