@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+const jwt = require('jsonwebtoken');
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 require("dotenv").config();
 const app = express();
@@ -20,6 +21,10 @@ async function run() {
     const serviceCollection = client.db("flyPlane").collection("services");
 
     const reviewsCollection = client.db("flyPlane").collection("reviews");
+    
+   
+
+
 
     app.get("/allServices", async (req, res) => {
       const query = {};
