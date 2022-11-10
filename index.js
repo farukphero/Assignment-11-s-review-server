@@ -23,13 +23,13 @@ async function run() {
 
     app.get("/allServices", async (req, res) => {
       const query = {};
-      const cursor = serviceCollection.find(query);
+      const cursor = serviceCollection.find(query).sort({_id:-1});
       const services = await cursor.toArray();
       res.send(services);
     });
     app.get("/services", async (req, res) => {
       const query = {};
-      const cursor = serviceCollection.find(query).limit(3);
+      const cursor = serviceCollection.find(query).sort({_id:-1}).limit(3);
       const services = await cursor.toArray();
       res.send(services);
     });
@@ -47,20 +47,14 @@ async function run() {
     });
     app.get("/reviews", async (req, res) => {
       const query = {}
-      const cursor = reviewsCollection.find(query);
+      const cursor = reviewsCollection.find(query).sort({_id:-1});
       const reviews = await cursor.toArray();
       res.send(reviews);
     });
     app.get("/reviews/:id", async (req, res) => {
       const id = req.params.id;
       const query = {  identifier: id };
-      // const options = {
-      //   // sort returned documents in ascending order by title (A->Z)
-      //   sort: { title: 1 },
-      //   // Include only the `title` and `imdb` fields in each returned document
-      //   projection: { identifier: 0, title: 1, imdb: 1 },
-      // };
-      const cursor =  reviewsCollection.find(query );
+      const cursor =  reviewsCollection.find(query ).sort({identifier:-1});
       const reviews = await cursor.toArray()
       res.send(reviews);
     });
@@ -70,25 +64,6 @@ async function run() {
       reviews.id = result.insertedId;
       res.send(result);
     });
-
-
-    // app.put("/reviews/:id", async(req, res)=>{
-    //   const id = req.params.id
-    //   const query = {  identifier: id };
-    //   const updatedUser = req.body
-    //   const option = {upsert : true}
-    //   const updatedReview ={
-    //     $set :{
-    //       title: "faruk"
-    //     }
-    //   }
-    //   const result =await reviewsCollection.updateOne(query, option ,updatedReview)
-    //   // const  result = await cursor.toArray()
-    //   res.send(result)
-    //   console.log(updatedUser)
-
-
-    // })
 
     app.delete("/reviews/:id", async (req, res) => {
       const id = req.params.id;
